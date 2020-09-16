@@ -1,0 +1,47 @@
+pipeline {
+    agent {
+        label 'node01'
+    }
+
+    parameters {
+        string(name: 'GitRepo', defaultValue: 'git@github.com:senkodima/DevOps_course_Project.git', description: 'My repository (Clone with SSH)')
+        credentials(name: 'GitCredsToUse', defaultValue: 'jenkins', description: 'Credentials to use for github repo', credentialType: "SSH username with private key", required: true )
+    }
+    
+    stages {
+        stage('Pull git repository') {
+            steps {
+                git credentialsId: "${params.GitCredsToUse}", url: "${params.GitRepo}"
+            }
+        }
+
+        stage('check files') {
+            steps { 
+                sh '''
+                    whoami
+                    printf "\n"
+                    pwd
+                    printf "\n"
+                    ls -la
+                '''  
+            }
+        }
+
+        stage('Install docker to target') {
+            steps {
+                ansiblePlaybook(
+                    inventory: 'inventory.yaml',
+                    playbook: 'install_init.yaml'
+                )
+            }
+        }
+    }
+    post {
+        success {
+            slackSend (color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+        }
+        failure {
+            slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+        }
+    }
+}
