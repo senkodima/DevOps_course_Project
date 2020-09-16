@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label 'node01'
+        label 'master'
     }
 
     parameters {
@@ -31,14 +31,14 @@ pipeline {
             steps {
                 ansiblePlaybook(
                     inventory: 'inventory.yaml',
-                    playbook: 'start_update.yaml'
+                    playbook: 'update.yaml'
                 )
             }
         }
     }
     post {
         success {
-            slackSend (color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+            slackSend (color: '#00FF00', message: "SUCCESSFULL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
         }
         failure {
             slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
