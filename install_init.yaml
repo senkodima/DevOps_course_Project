@@ -32,7 +32,8 @@
       include_role:
         name: docker
         tasks_from: install
-      when: output.stdout == "inactive"
+      when: (output.stdout == "unknown") or
+            (output.stdout == "inactive")
 
     - name: Test network present
       shell: |
