@@ -1,7 +1,6 @@
 ---
 - name: Install packages for Docker
   yum:
-    update_cache: yes
     name:
       - yum-utils
       - device-mapper-persistent-data
@@ -16,7 +15,6 @@
 
 - name: Install Docker
   yum:
-    update_cache: yes
     name:
       - docker-ce
       - docker-ce-cli
