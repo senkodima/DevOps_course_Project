@@ -81,7 +81,7 @@
         state: directory
         owner: user
         group: user
-        mode: '0755'
+        mode: 0755
 
     - name: Create a directory mariadb
       file:
@@ -89,15 +89,15 @@
         state: directory
         owner: user
         group: user
-        mode: '0755'
+        mode: 0755
 
     - name: Create a directory backup
       file:
-        path: /data/backup
+        path: /data/backups
         state: directory
         owner: user
         group: user
-        mode: '0755'
+        mode: 0755
 
     - name: docker run mariadb
       shell: |
