@@ -10,6 +10,8 @@
     - name: Сheck host
       shell: |
         hostname
+        printf "\n"
+        ip addr
       register: out
     - name: show host
       debug:
