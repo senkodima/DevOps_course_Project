@@ -1,6 +1,7 @@
 pipeline {
     agent {
-        label 'node01'
+        // label 'node01'
+        label 'master'
     }
 
     parameters {
