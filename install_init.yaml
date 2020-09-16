@@ -52,7 +52,7 @@
       when: (output.stdout == "unknown") or
             (output.stdout == "inactive")
 
-    - name: Test network present
+    - name: Show docker networks present
       shell: |
         docker network ls
         exit 0
@@ -79,24 +79,24 @@
       file:
         path: /data/wordpress
         state: directory
-        owner: user
-        group: user
+        owner: jenkins
+        group: jenkins
         mode: 0755
 
     - name: Create a directory mariadb
       file:
         path: /data/mariadb
         state: directory
-        owner: user
-        group: user
+        owner: jenkins
+        group: jenkins
         mode: 0755
 
     - name: Create a directory backup
       file:
         path: /data/backups
         state: directory
-        owner: user
-        group: user
+        owner: jenkins
+        group: jenkins
         mode: 0755
 
     - name: docker run mariadb
