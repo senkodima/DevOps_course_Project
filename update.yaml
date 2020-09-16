@@ -1,7 +1,7 @@
 ---
 - hosts: all
   gather_facts: yes # to get "ansible_hostname" in "Notify Slack of Playbook"
-  become: true
+  become: yes
   vars:
     name_cms: "wordpress"
     name_db: "mariadb"
@@ -22,7 +22,7 @@
 
     - name: Backup data
       shell: |
-        rsync -a /var/lib/docker/volumes/ /data/backups/wolumes.bkp.$(date +%Y%m%d-%H.%M.%S)
+        rsync -a /var/lib/docker/volumes/ /data/backups/volumes.bakup.$(date +%Y%m%d-%H.%M.%S)
       args:
         executable: /bin/bash
 
@@ -45,7 +45,7 @@
       args:
         executable: /bin/bash
 
-    - name: Checks if App is works correctly
+    - name: Checks if App working correctly
       block:
         - name: Checks if it works
           uri:
@@ -67,7 +67,9 @@
         - include_role:
             name: slack_handler
             tasks_from: failure
-
-    # - name: Import rollback playbook tasks
-    #   include_tasks: rollback.yaml
-    #   tags: never 
+            
+        # - name: Import playbook tasks
+        #   include_role:
+        #     name: rollback
+        #     tasks_from: rollback
+        #   tags: never
